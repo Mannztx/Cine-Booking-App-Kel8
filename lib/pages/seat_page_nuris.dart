@@ -1,11 +1,32 @@
 import 'package:flutter/material.dart';
 
-class SeatAppbar_Nuris extends StatelessWidget {
-  SeatAppbar_Nuris({super.key});
+class SeatPage_Nuris extends StatelessWidget {
+  // final QueryDocumentSnapshot movie;
+
+  SeatPage_Nuris({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final movie = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(movie["title"]),
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pop(context);
+          }, 
+          icon: Icon(Icons.arrow_back)
+        ),
+      ),
+      body: Column(
+        children: [
+          // legend bar
+          
+          SeatItem_Nuris()
+        ],
+      )
+
+    );
   }
 }
 
@@ -19,10 +40,8 @@ class SeatItem_Nuris extends StatefulWidget {
 class _SeatItem_Nuris_state extends State<SeatItem_Nuris>{
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
+    return  Center(
         child: Text("Seat Page (placeholder)"),
-      ),
-    );
+      );
   }
 }

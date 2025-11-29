@@ -13,7 +13,7 @@ class DetailPageVirdan extends StatelessWidget {
 
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.pushNamed(context, "/seat", arguments: movie);
+          Navigator.pushNamed(context, "/seat", arguments: movie.data());
         },
         label: const Text("Book Ticket"),
         icon: const Icon(Icons.event_seat),
