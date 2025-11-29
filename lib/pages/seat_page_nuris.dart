@@ -20,6 +20,22 @@ class SeatPage_Nuris extends StatelessWidget {
       ),
       body: Column(
         children: [
+          Divider(
+            thickness: 1,        
+            color: Colors.grey[300],  
+          ),
+          Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              legendItem('images/kursi_abu_uas.png', "Kosong"),
+              legendItem('images/kursi_biru_uas.png', "Dipilih"),
+              legendItem('images/kursi_merah_uas.png', "Terjual"),
+            ],
+          ),
+          Divider(
+            thickness: 1,        
+            color: Colors.grey[300],  
+          ),
           SeatItem_Nuris()
         ],
       )
@@ -42,4 +58,16 @@ class _SeatItem_Nuris_state extends State<SeatItem_Nuris>{
         child: Text("Seat Page (placeholder)"),
       );
   }
+}
+
+Widget legendItem(String path, String label) {
+  return Row(
+    children: [
+      Image.asset(path,
+      width: 25,
+      height:25,),
+      const SizedBox(width: 8),
+      Text(label),
+    ],
+  );
 }
