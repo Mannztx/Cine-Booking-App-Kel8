@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
 
       // 🔥 Tambahan: Routing ke halaman kursi (punya Nuris)
       routes: {
-        "/seat": (_) => const SeatPageNuris(),
+        "/seat": (_) => const SeatItem_Nuris(),
       },
     );
   }
