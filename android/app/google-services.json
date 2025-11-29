@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "964541413476",
+    "project_id": "cine-booking-app-kel8",
+    "storage_bucket": "cine-booking-app-kel8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:964541413476:android:247af1fadb2b602f9dc771",
+        "android_client_info": {
+          "package_name": "com.example.cine_booking_app_kel8"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDO-bJjbuTYmSEHeLKywdD0k3Emx0_RVT8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
