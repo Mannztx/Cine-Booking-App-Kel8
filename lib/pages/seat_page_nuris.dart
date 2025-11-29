@@ -20,8 +20,6 @@ class SeatPage_Nuris extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // legend bar
-          
           SeatItem_Nuris()
         ],
       )
