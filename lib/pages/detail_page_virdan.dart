@@ -10,18 +10,28 @@ class DetailPageVirdan extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(movie['title'])),
-      floatingActionButton: FloatingActionButton(
+
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.pushNamed(context, "/seat", arguments: movie);
         },
-        child: const Icon(Icons.event_seat),
+        label: const Text("Book Ticket"),
+        icon: const Icon(Icons.event_seat),
       ),
+
       body: ListView(
         children: [
+          // Poster
           Hero(
             tag: movie['poster_url'],
-            child: Image.network(movie['poster_url'], height: 300, fit: BoxFit.cover),
+            child: Image.network(
+              movie['poster_url'],
+              height: 320,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
           ),
+
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -29,18 +39,23 @@ class DetailPageVirdan extends StatelessWidget {
               children: [
                 Text(
                   movie['title'],
-                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                const SizedBox(height: 8),
+
+                const SizedBox(height: 10),
 
                 Text("Rating: ${movie['rating']} ⭐"),
                 Text("Durasi: ${movie['duration']} menit"),
                 Text("Harga Dasar: Rp ${movie['base_price']}"),
 
                 const SizedBox(height: 20),
+
                 const Text(
-                  "Deskripsi film belum tersedia.",
-                  style: TextStyle(color: Colors.grey),
+                  "Deskripsi belum tersedia. Tambahkan dari Firebase Console jika ingin.",
+                  style: TextStyle(fontSize: 14, color: Colors.grey),
                 ),
               ],
             ),

@@ -8,25 +8,32 @@ class HomePageVirdan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("CineBooking")),
+      appBar: AppBar(title: const Text("Daftar Film")),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('movies').snapshots(),
+        stream: FirebaseFirestore.instance.collection("movies").snapshots(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (!snapshot.hasData) {
+            return const Center(child: Text("Tidak ada data"));
+          }
 
           final movies = snapshot.data!.docs;
 
           return GridView.builder(
             padding: const EdgeInsets.all(12),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.62,
-              crossAxisSpacing: 10,
+              crossAxisCount: 2, // 2 kolom
+              childAspectRatio: 0.63, // biar poster proporsional
               mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
             ),
             itemCount: movies.length,
             itemBuilder: (context, i) {
               final m = movies[i];
+
               return GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -39,25 +46,40 @@ class HomePageVirdan extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Poster Film
                     Expanded(
                       child: Hero(
                         tag: m['poster_url'],
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.network(m['poster_url'], fit: BoxFit.cover),
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.network(
+                            m['poster_url'],
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 5),
+
+                    const SizedBox(height: 6),
+
+                    // Judul Film
                     Text(
                       m['title'],
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+
+                    // Rating
                     Text(
                       "${m['rating']} ⭐",
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
                     ),
                   ],
                 ),
