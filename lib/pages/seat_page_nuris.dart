@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
 
+class SeatAppbar_Nuris extends StatelessWidget {
+  SeatAppbar_Nuris({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
 class SeatItem_Nuris extends StatefulWidget {
   const SeatItem_Nuris({super.key});
 
