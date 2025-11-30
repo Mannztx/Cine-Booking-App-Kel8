@@ -63,7 +63,7 @@ class _SeatItem_state_Nuris extends State<SeatItem_Nuris>{
       builder: (context, snapshot) {
         if (!snapshot.hasData) return CircularProgressIndicator();
 
-        final docs = snapshot.data!.docs;
+        final bookings = snapshot.data!.docs;
         return GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 12,
@@ -73,11 +73,25 @@ class _SeatItem_state_Nuris extends State<SeatItem_Nuris>{
 
           itemCount: 150,
           itemBuilder: (context, index) {
+            // kodeKursi.add(teksKursi_Nuris(index));
+            String kodeKursi = teksKursi_Nuris(index);
             bool isPressed = kursiPilihan.contains(index);
-            final String imagePath = isPressed
-              ?'images/kursi_biru_uas_2.png'
-              :'images/kursi_abu_uas_2.png';
-                  // final m = docs[index];
+
+            final terbooking = bookings.any((b) {
+              List kursi = b['seats'];
+              return kursi.contains(kodeKursi);
+            });
+
+            final String imagePath;
+
+            if (terbooking) {
+              imagePath = 'images/kursi_merah_uas_2.png';  
+            } else if(isPressed){
+              imagePath = 'images/kursi_biru_uas_2.png';
+            } else{
+              imagePath = 'images/kursi_abu_uas_2.png';
+            }
+
             return GestureDetector(
               onTap: (){
                 setState(() {
