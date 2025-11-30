@@ -64,11 +64,6 @@ class _SeatItem_state_Nuris extends State<SeatItem_Nuris>{
         if (!snapshot.hasData) return CircularProgressIndicator();
 
         final docs = snapshot.data!.docs;
-        // final mediaQuery = MediaQuery.of(context);
-        // double tinggiLayar = mediaQuery.size.height;
-        // double lebarLayar = mediaQuery.size.width;
-
-        // final List<String> listKursi = List.generate((tinggiLayar*lebarLayar/(50*50)).toInt(), (i) => 'images/kursi_abu_uas.png');
         return GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 12,
