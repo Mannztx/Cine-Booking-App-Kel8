@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SeatPage_Nuris extends StatelessWidget {
   // final QueryDocumentSnapshot movie;
@@ -111,12 +112,15 @@ class _SeatItem_state_Nuris extends State<SeatItem_Nuris>{
                     imagePath,
                   ),
                   Text(teksKursi_Nuris(index),
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
+                      textStyle: TextStyle(
                       fontSize: 10,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       // fontFamily: 
-                    ),
+                    ),) 
+                    
+                    
                   ),
                 ],
               )
