@@ -114,7 +114,8 @@ class _SeatItem_state_Nuris extends State<SeatItem_Nuris>{
                     style: TextStyle(
                       fontSize: 10,
                       color: Colors.white,
-                      fontWeight: FontWeight.bold
+                      fontWeight: FontWeight.bold,
+                      // fontFamily: 
                     ),
                   ),
                 ],
