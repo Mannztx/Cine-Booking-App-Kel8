@@ -1,16 +1,12 @@
 # cine_booking_app_kel8
 
-A new Flutter project.
+- Nama: Firman Ardiansyah
+- NIM: 362458302101
+- Kelas: 2D
+- Prodi: TRPL
+- Peran: Anggota 1
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Tugas Backend Engineer & Data Seeder
+- Setup Firebase (Auth + Firestore).
+- Membuat Class Model Data (movie_model_Firman.dart) Membuat fungsi fromMap dan toMap manual.
+- Menginput 10 data film via Firebase Console dengan variasi panjang judul (ada yang pendek, ada yang panjang) untuk menguji Logic Trap.
