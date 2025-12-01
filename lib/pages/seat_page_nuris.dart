@@ -74,7 +74,6 @@ class _SeatItem_state_Nuris extends State<SeatItem_Nuris>{
 
           itemCount: 150,
           itemBuilder: (context, index) {
-            // kodeKursi.add(teksKursi_Nuris(index));
             String kodeKursi = teksKursi_Nuris(index);
             bool isPressed = kursiPilihan.contains(index);
 
@@ -112,15 +111,13 @@ class _SeatItem_state_Nuris extends State<SeatItem_Nuris>{
                     imagePath,
                   ),
                   Text(teksKursi_Nuris(index),
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.roboto(
                       textStyle: TextStyle(
-                      fontSize: 10,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      // fontFamily: 
-                    ),) 
-                    
-                    
+                        fontSize: 10,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold, 
+                      ),
+                    ) 
                   ),
                 ],
               )
