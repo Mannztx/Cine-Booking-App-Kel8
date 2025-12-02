@@ -1,40 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:provider/provider.dart';
+import 'providers/seat_provider.dart';
 
-// Tambahan: import halaman buatanmu
+// Halaman
 import 'pages/home_page_virdan.dart';
 import 'pages/seat_page_nuris.dart';
 
-// Inisialisasi Firebase
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(const MyApp());
 }
 
-// Bagian Frontend (Lakukan Modifikasi)
+// ===============================
+//  APP WRAPPER DENGAN PROVIDER
+// ===============================
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    return MultiProvider(
+      providers: [
+        // PROVIDER KAMU (tugas nomor 4)
+        ChangeNotifierProvider(create: (_) => SeatProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Cinema Booking App',
+
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        ),
+
+        // 🔥 Halaman utama HomePage Virdan
+        home: const HomePageVirdan(),
+
+        // 🔥 Routing ke halaman Nuris (Seat Page)
+        routes: {"/seat": (_) => SeatPage_Nuris()},
       ),
-
-      // 🔥 MODIFIKASI: halaman utama diganti ke HomePageVirdan
-      home: const HomePageVirdan(),
-
-      // 🔥 Tambahan: Routing ke halaman kursi (punya Nuris)
-      routes: {
-        "/seat": (_) => SeatPage_Nuris(),
-      },
     );
   }
 }
