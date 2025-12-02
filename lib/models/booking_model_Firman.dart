@@ -23,7 +23,7 @@ class BookingModel_Firman {
     return BookingModel_Firman(
       bookingId_Firman: map['booking_id'] as String,
       userId_Firman: map['user_id'] as String,
-      movieTitle_Firman: map['movie_id'] as String,
+      movieTitle_Firman: map['movie_title'] as String,
       // Array dari firestore dikonversi menjadi list string
       seats_Firman: List<String>.from(map['seats'] as List),
       totalPrice_Firman: map['total_price'] as int,

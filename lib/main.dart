@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-
+import 'package:provider/provider.dart';
 // Tambahan: import halaman buatanmu
 import 'pages/home_page_virdan.dart';
 import 'pages/seat_page_nuris.dart';
+import '../controllers/movie_controller_Maulidin.dart';
 
 // Inisialisasi Firebase
 void main() async {
@@ -13,7 +14,15 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(
+    MultiProvider( // Gunakan MultiProvider jika ada Controller lain
+      providers: [
+        ChangeNotifierProvider(create: (_) => MovieController_Maulidin()),
+        // Tambahkan Controller Anggota 5 (misal: AuthController) di sini
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 // Bagian Frontend (Lakukan Modifikasi)
