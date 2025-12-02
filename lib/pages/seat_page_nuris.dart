@@ -3,9 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SeatPage_Nuris extends StatelessWidget {
-  // final QueryDocumentSnapshot movie;
-
   SeatPage_Nuris({super.key});
+  final ValueNotifier<List<String>> kursiPilihanNotifier = ValueNotifier([]);
 
   @override
   Widget build(BuildContext context) {
@@ -38,17 +37,28 @@ class SeatPage_Nuris extends StatelessWidget {
             thickness: 1,        
             color: Colors.grey[300],  
           ),
-          Expanded(child: SeatItem_Nuris(),)
-          
+          Expanded(child: 
+            SeatItem_Nuris(
+              onSeatChanged: (kursi) {
+                kursiPilihanNotifier.value = List.from(kursi);
+              },
+            ),
+          ),
+          ValueListenableBuilder(
+            valueListenable: kursiPilihanNotifier,
+            builder: (context, kursiDipilih, _) {
+              return _buildCheckoutArea(context, kursiDipilih, 35000);
+            },
+          ),
         ],
       )
-
     );
   }
 }
 
 class SeatItem_Nuris extends StatefulWidget {
-  const SeatItem_Nuris({super.key});
+   final Function(List<String>) onSeatChanged;
+  const SeatItem_Nuris({super.key, required this.onSeatChanged});
 
   @override
   State<SeatItem_Nuris> createState() => _SeatItem_state_Nuris();
@@ -56,7 +66,7 @@ class SeatItem_Nuris extends StatefulWidget {
 
 class _SeatItem_state_Nuris extends State<SeatItem_Nuris>{
 
- final List<int> kursiPilihan = [];
+ final List<String> kursiPilihan = [];
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -75,7 +85,7 @@ class _SeatItem_state_Nuris extends State<SeatItem_Nuris>{
           itemCount: 150,
           itemBuilder: (context, index) {
             String kodeKursi = teksKursi_Nuris(index);
-            bool isPressed = kursiPilihan.contains(index);
+            bool diPilih = kursiPilihan.contains(kodeKursi);
 
             final terbooking = bookings.any((b) {
               List kursi = b['seats'];
@@ -86,7 +96,7 @@ class _SeatItem_state_Nuris extends State<SeatItem_Nuris>{
 
             if (terbooking) {
               imagePath = 'images/kursi_merah_uas_2.png';  
-            } else if(isPressed){
+            } else if(diPilih){
               imagePath = 'images/kursi_biru_uas_2.png';
             } else{
               imagePath = 'images/kursi_abu_uas_2.png';
@@ -95,12 +105,13 @@ class _SeatItem_state_Nuris extends State<SeatItem_Nuris>{
             return GestureDetector(
               onTap: (){
                 setState(() {
-                  if (isPressed) {
-                    kursiPilihan.remove(index);
+                  if (diPilih) {
+                    kursiPilihan.remove(kodeKursi);
                   } 
                   else {
-                    kursiPilihan.add(index);
+                    kursiPilihan.add(kodeKursi);
                   }
+                  widget.onSeatChanged(kursiPilihan);
                 });
               },
 
@@ -128,6 +139,77 @@ class _SeatItem_state_Nuris extends State<SeatItem_Nuris>{
     );
   }
 }
+
+
+Widget _buildCheckoutArea(
+  BuildContext context,
+  List<String> kursiDipilih,
+  int hargaTiket,
+) {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.3),
+          spreadRadius: 1,
+          blurRadius: 5,
+          offset: const Offset(0, -2),
+        ),
+      ],
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text("Total Harga:"),
+            Text(
+              "Rp ${(kursiDipilih.length * hargaTiket)}",
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.indigo,
+              ),
+            ),
+          ],
+        ),
+
+        SizedBox(
+          width: 180,
+          height: 50,
+          child: ElevatedButton.icon(
+            onPressed: kursiDipilih.isEmpty
+                ? null
+                : () async {
+                    await FirebaseFirestore.instance
+                        .collection("bookings")
+                        .add({
+                      "seats": kursiDipilih,
+                      "timestamp": DateTime.now(),
+                    });
+
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Pemesanan Berhasil!"),
+                        ),
+                      );
+
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                    }
+                  },
+            icon: const Icon(Icons.confirmation_number, color: Colors.white),
+            label: const Text("Book Ticket"),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 
 Widget legendItems_Nuris(String path, String label) {
   return Row(
