@@ -8,7 +8,18 @@ class HomePageVirdan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Daftar Film")),
+      appBar: AppBar(
+        title: const Text("Daftar Film"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            tooltip: "Profile",
+            onPressed: () {
+              Navigator.pushNamed(context, "/profile");
+            },
+          ),
+        ],
+      ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection("movies").snapshots(),
         builder: (context, snapshot) {
@@ -25,8 +36,8 @@ class HomePageVirdan extends StatelessWidget {
           return GridView.builder(
             padding: const EdgeInsets.all(12),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, // 2 kolom
-              childAspectRatio: 0.63, // biar poster proporsional
+              crossAxisCount: 2,
+              childAspectRatio: 0.63,
               mainAxisSpacing: 10,
               crossAxisSpacing: 10,
             ),
@@ -46,7 +57,6 @@ class HomePageVirdan extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Poster Film
                     Expanded(
                       child: Hero(
                         tag: m['poster_url'],
@@ -60,26 +70,16 @@ class HomePageVirdan extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 6),
-
-                    // Judul Film
                     Text(
                       m['title'],
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-
-                    // Rating
                     Text(
                       "${m['rating']} ⭐",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ],
                 ),
