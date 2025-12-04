@@ -14,6 +14,7 @@ class _RegisterPageAng5State extends State<RegisterPageAng5> {
   final emailCtrl = TextEditingController();
   final usernameCtrl = TextEditingController();
   final passCtrl = TextEditingController();
+  final balanceCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +56,15 @@ class _RegisterPageAng5State extends State<RegisterPageAng5> {
                 ),
               ),
               const SizedBox(height: 16),
+              TextFormField(
+                controller: balanceCtrl,
+                validator: (v) => v!.isEmpty ? "Balance wajib" : null,
+                decoration: const InputDecoration(
+                  labelText: "Password",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 16),
               if (auth.errorMessage != null)
                 Text(
                   auth.errorMessage!,
@@ -68,6 +78,7 @@ class _RegisterPageAng5State extends State<RegisterPageAng5> {
                     email: emailCtrl.text.trim(),
                     password: passCtrl.text.trim(),
                     username: usernameCtrl.text.trim(),
+                    balance: balanceCtrl.text.trim(),
                     context: context,
                   );
                 },
