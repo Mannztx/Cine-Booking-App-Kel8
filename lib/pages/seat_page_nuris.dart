@@ -47,7 +47,7 @@ class SeatPage_Nuris extends StatelessWidget {
           ValueListenableBuilder(
             valueListenable: kursiPilihanNotifier,
             builder: (context, kursiDipilih, _) {
-              return _buildCheckoutArea(context, kursiDipilih, 35000);
+              return _buildCheckoutArea_Nuris(context, kursiDipilih, 35000);
             },
           ),
         ],
@@ -141,7 +141,7 @@ class _SeatItem_state_Nuris extends State<SeatItem_Nuris>{
 }
 
 
-Widget _buildCheckoutArea(
+Widget _buildCheckoutArea_Nuris(
   BuildContext context,
   List<String> kursiDipilih,
   int hargaTiket,
