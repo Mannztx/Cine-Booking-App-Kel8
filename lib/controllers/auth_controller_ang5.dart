@@ -15,6 +15,7 @@ class AuthControllerAng5 extends ChangeNotifier {
     required String email,
     required String password,
     required String username,
+    required String balance,
     required BuildContext context,
   }) async {
     try {
@@ -33,6 +34,7 @@ class AuthControllerAng5 extends ChangeNotifier {
         'uid': credential.user!.uid,
         'email': email,
         'username': username,
+        'balance': balance,
         'created_at': FieldValue.serverTimestamp(),
       });
     } on FirebaseAuthException catch (e) {
