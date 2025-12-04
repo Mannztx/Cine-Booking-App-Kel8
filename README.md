@@ -1,7 +1,7 @@
 # cine_booking_app_kel8
 
 - Nama: Ahmad Maulidin
-- NIM: 362458302101
+- NIM: 362458302146
 - Kelas: 2D
 - Prodi: TRPL
 - Peran: Anggota 4
