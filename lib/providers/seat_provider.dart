@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cine_booking_app_kel8/controllers/booking_logic_controller.dart';
 
 class SeatProvider extends ChangeNotifier {
   List<String> selectedSeats = [];
@@ -22,13 +24,23 @@ class SeatProvider extends ChangeNotifier {
   Future<void> checkoutToFirebase({
     required BuildContext context,
     required Map<String, dynamic> movie,
+    required String userId,
   }) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final logic = BookingLogicController();
+    double totalPrice = logic.calculateTotal(
+      movieTitle: movie["title"],
+      seats: selectedSeats,
+      basePrice: movie["base_price"].toDouble(),
+    );
+
     try {
       await FirebaseFirestore.instance.collection("bookings").add({
-        "movie_id": movie["id"],
         "movie_title": movie["title"],
+        "total_price": totalPrice.toInt(),
         "seats": selectedSeats,
-        "time": DateTime.now(),
+        "booking_date": DateTime.now(),
+        "user_id": uid,
       });
 
       clearSeats(); // bersihkan pilihan
