@@ -60,6 +60,7 @@ class _LoginPageAng5State extends State<LoginPageAng5> {
                   await auth.loginWithEmail(
                     email: emailCtrl.text.trim(),
                     password: passCtrl.text.trim(),
+                    context: context,
                   );
                 },
                 child: auth.loading
