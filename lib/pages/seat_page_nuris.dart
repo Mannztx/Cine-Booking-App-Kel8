@@ -1,13 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import '../providers/seat_provider.dart';
+import '../providers/seat_provider_dinn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cine_booking_app_kel8/controllers/booking_logic_controller.dart';
+import 'package:cine_booking_app_kel8/controllers/booking_logic_controller_dinn.dart';
 
-class SeatPage_Nuris extends StatelessWidget {
-  SeatPage_Nuris({super.key});
+class SeatPage_Nuris extends StatefulWidget {
+  const SeatPage_Nuris({super.key});
+
+  @override
+  _SeatPage_NurisState createState() => _SeatPage_NurisState();
+}
+
+class _SeatPage_NurisState extends State<SeatPage_Nuris> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      final movie =
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+      context.read<SeatProvider_dinn>().listenSoldSeats(movie["title"]);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,17 +52,17 @@ class SeatPage_Nuris extends StatelessWidget {
 
           Expanded(child: SeatItem_Nuris()),
 
-          Consumer<SeatProvider>(
+          Consumer<SeatProvider_dinn>(
             builder: (context, seatProv, _) {
-              final logic = BookingLogicController();
+              final logic = BookingLogicController_dinn();
               final movie =
                   ModalRoute.of(context)!.settings.arguments
                       as Map<String, dynamic>;
 
-              double totalPrice = logic.calculateTotal(
-                movieTitle: movie["title"],
-                seats: seatProv.selectedSeats,
-                basePrice: movie["base_price"].toDouble(),
+              double totalPrice = logic.calculateTotal_dinn(
+                movieTitle_dinn: movie["title"],
+                seats_dinn: seatProv.selectedSeats,
+                basePrice_dinn: movie["base_price"].toDouble(),
               );
 
               return _buildCheckoutArea_Nuris(
@@ -67,63 +81,49 @@ class SeatPage_Nuris extends StatelessWidget {
 class SeatItem_Nuris extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final seatProv = Provider.of<SeatProvider>(context);
+    final seatProv = Provider.of<SeatProvider_dinn>(context);
 
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection("bookings").snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return Center(child: CircularProgressIndicator());
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 12,
+        mainAxisSpacing: 5,
+        crossAxisSpacing: 5,
+      ),
+      itemCount: 150,
+      itemBuilder: (context, index) {
+        String kodeKursi = teksKursi_Nuris(index);
 
-        final bookings = snapshot.data!.docs;
+        bool isSelected = seatProv.selectedSeats.contains(kodeKursi);
+        bool terbooking = seatProv.soldSeats.contains(kodeKursi);
 
-        return GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 12,
-            mainAxisSpacing: 5,
-            crossAxisSpacing: 5,
-          ),
-          itemCount: 150,
-          itemBuilder: (context, index) {
-            String kodeKursi = teksKursi_Nuris(index);
+        final imagePath = terbooking
+            ? 'images/kursi_merah_uas_2.png'
+            : (isSelected
+                  ? 'images/kursi_biru_uas_2.png'
+                  : 'images/kursi_abu_uas_2.png');
 
-            bool isSelected = seatProv.selectedSeats.contains(kodeKursi);
-
-            bool terbooking = bookings.any((b) {
-              List kursi = b['seats'];
-              return kursi.contains(kodeKursi);
-            });
-
-            final imagePath = terbooking
-                ? 'images/kursi_merah_uas_2.png'
-                : (isSelected
-                      ? 'images/kursi_biru_uas_2.png'
-                      : 'images/kursi_abu_uas_2.png');
-
-            return GestureDetector(
-              onTap: () {
-                if (!terbooking) {
-                  seatProv.toggleSeat(kodeKursi);
-                }
-              },
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Image.asset(imagePath),
-                  Text(
-                    kodeKursi,
-                    style: GoogleFonts.roboto(
-                      textStyle: TextStyle(
-                        fontSize: 10,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
+        return GestureDetector(
+          onTap: () {
+            if (!terbooking) {
+              seatProv.toggleSeat_dinn(kodeKursi);
+            }
           },
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Image.asset(imagePath),
+              Text(
+                kodeKursi,
+                style: GoogleFonts.roboto(
+                  textStyle: TextStyle(
+                    fontSize: 10,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
@@ -135,14 +135,14 @@ Widget _buildCheckoutArea_Nuris(
   List<String> kursiDipilih,
   double hargaTiket,
 ) {
-  final seatProv = Provider.of<SeatProvider>(context, listen: false);
+  final seatProv = Provider.of<SeatProvider_dinn>(context, listen: false);
   final movie =
       ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-  final logic = BookingLogicController();
-  double totalPrice = logic.calculateTotal(
-    movieTitle: movie["title"],
-    seats: seatProv.selectedSeats,
-    basePrice: movie["base_price"].toDouble(),
+  final logic = BookingLogicController_dinn();
+  double totalPrice = logic.calculateTotal_dinn(
+    movieTitle_dinn: movie["title"],
+    seats_dinn: seatProv.selectedSeats,
+    basePrice_dinn: movie["base_price"].toDouble(),
   );
 
   return Container(
@@ -183,7 +183,7 @@ Widget _buildCheckoutArea_Nuris(
             onPressed: kursiDipilih.isEmpty
                 ? null
                 : () async {
-                    await seatProv.checkoutToFirebase(
+                    await seatProv.checkoutToFirebase_dinn(
                       context: context,
                       movie: movie,
                       userId: FirebaseAuth.instance.currentUser!.uid,
