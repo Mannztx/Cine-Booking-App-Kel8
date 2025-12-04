@@ -4,7 +4,7 @@ import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 
 // Providers
-import 'providers/seat_provider.dart';
+import 'providers/seat_provider_dinn.dart';
 import 'controllers/auth_controller_ang5.dart';
 
 // Pages
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => SeatProvider()),
+        ChangeNotifierProvider(create: (_) => SeatProvider_dinn()),
         ChangeNotifierProvider(create: (_) => AuthControllerAng5()),
       ],
       child: MaterialApp(

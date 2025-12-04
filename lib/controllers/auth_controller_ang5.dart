@@ -22,7 +22,25 @@ class AuthControllerAng5 extends ChangeNotifier {
       errorMessage = null;
       notifyListeners();
 
-      Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
+      if (username.isEmpty) {
+        errorMessage = "Username tidak boleh kosong";
+        notifyListeners();
+        return;
+      }
+
+      if (!email.contains("@") || !email.contains(".")) {
+        errorMessage = "Format email tidak valid!";
+        notifyListeners();
+        return;
+      }
+
+      if (password.length < 6) {
+        errorMessage = "Password minimal 6 Karakter";
+        notifyListeners();
+        return;
+      }
+
+      //Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
 
       final credential = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -53,9 +71,29 @@ class AuthControllerAng5 extends ChangeNotifier {
       errorMessage = null;
       notifyListeners();
 
-      Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
+      if (email.isEmpty) {
+        errorMessage = "password tidak boleh kosong!";
+        notifyListeners();
+        return;
+      } else if (!email.contains("@") || !email.contains(".")) {
+        errorMessage = "fromat email tidak valid!";
+        notifyListeners();
+        return;
+      }
+
+      if (password.isEmpty) {
+        errorMessage = "password tidak boleh kosong!";
+        notifyListeners();
+        return;
+      } else if (password.length < 6) {
+        errorMessage = "password tidak valid";
+        notifyListeners();
+        return;
+      }
 
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+      Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
     } on FirebaseAuthException catch (e) {
       errorMessage = e.message;
     } finally {
