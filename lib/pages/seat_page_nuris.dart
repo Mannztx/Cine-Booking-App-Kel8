@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import '../providers/seat_provider.dart';
+import '../providers/seat_provider_dinn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cine_booking_app_kel8/controllers/booking_logic_controller.dart';
+import 'package:cine_booking_app_kel8/controllers/booking_logic_controller_dinn.dart';
 
 class SeatPage_Nuris extends StatelessWidget {
   SeatPage_Nuris({super.key});
@@ -36,19 +36,19 @@ class SeatPage_Nuris extends StatelessWidget {
           ),
           Divider(thickness: 1, color: Colors.grey[300]),
 
-          Expanded(child: SeatItem_Nuris()),
+          Expanded(child: SeatItem_Nuris(movie: movie)),
 
-          Consumer<SeatProvider>(
+          Consumer<SeatProvider_dinn>(
             builder: (context, seatProv, _) {
-              final logic = BookingLogicController();
+              final logic = BookingLogicController_dinn();
               final movie =
                   ModalRoute.of(context)!.settings.arguments
                       as Map<String, dynamic>;
 
-              double totalPrice = logic.calculateTotal(
-                movieTitle: movie["title"],
-                seats: seatProv.selectedSeats,
-                basePrice: movie["base_price"].toDouble(),
+              double totalPrice = logic.calculateTotal_dinn(
+                movieTitle_dinn: movie["title"],
+                seats_dinn: seatProv.selectedSeats,
+                basePrice_dinn: movie["base_price"].toDouble(),
               );
 
               return _buildCheckoutArea_Nuris(
@@ -65,12 +65,18 @@ class SeatPage_Nuris extends StatelessWidget {
 }
 
 class SeatItem_Nuris extends StatelessWidget {
+  final Map<String, dynamic> movie;
+
+  SeatItem_Nuris({required this.movie});
   @override
   Widget build(BuildContext context) {
-    final seatProv = Provider.of<SeatProvider>(context);
+    final seatProv = Provider.of<SeatProvider_dinn>(context);
 
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection("bookings").snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection("bookings")
+          .where("movie_title", isEqualTo: movie["title"])
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
           return Center(child: CircularProgressIndicator());
@@ -103,7 +109,7 @@ class SeatItem_Nuris extends StatelessWidget {
             return GestureDetector(
               onTap: () {
                 if (!terbooking) {
-                  seatProv.toggleSeat(kodeKursi);
+                  seatProv.toggleSeat_dinn(kodeKursi);
                 }
               },
               child: Stack(
@@ -135,14 +141,14 @@ Widget _buildCheckoutArea_Nuris(
   List<String> kursiDipilih,
   double hargaTiket,
 ) {
-  final seatProv = Provider.of<SeatProvider>(context, listen: false);
+  final seatProv = Provider.of<SeatProvider_dinn>(context, listen: false);
   final movie =
       ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-  final logic = BookingLogicController();
-  double totalPrice = logic.calculateTotal(
-    movieTitle: movie["title"],
-    seats: seatProv.selectedSeats,
-    basePrice: movie["base_price"].toDouble(),
+  final logic = BookingLogicController_dinn();
+  double totalPrice = logic.calculateTotal_dinn(
+    movieTitle_dinn: movie["title"],
+    seats_dinn: seatProv.selectedSeats,
+    basePrice_dinn: movie["base_price"].toDouble(),
   );
 
   return Container(
@@ -183,7 +189,7 @@ Widget _buildCheckoutArea_Nuris(
             onPressed: kursiDipilih.isEmpty
                 ? null
                 : () async {
-                    await seatProv.checkoutToFirebase(
+                    await seatProv.checkoutToFirebase_dinn(
                       context: context,
                       movie: movie,
                       userId: FirebaseAuth.instance.currentUser!.uid,
