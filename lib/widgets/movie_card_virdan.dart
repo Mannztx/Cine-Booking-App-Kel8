@@ -43,3 +43,8 @@ class MovieCardVirdan extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
+          // Rating
+          Text(
+            "${movie['rating']} ⭐",
+            style: const TextStyle(fontSize: 12, color: Colors.grey),
+          ),
