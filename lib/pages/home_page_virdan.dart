@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'detail_page_virdan.dart';
-import '../widgets/movie_card_virdan.dart';
-
+import '../widgets/movie_card_virdan.dart'; 
 
 class HomePageVirdan extends StatelessWidget {
   const HomePageVirdan({super.key});
@@ -79,9 +78,23 @@ class HomePageVirdan extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
+
+                    // Rating
                     Text(
                       "${m['rating']} ⭐",
                       style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+
+                    // ini genre yang virdan tambahin
+                    Text(
+                      m['genre'] ?? "Genre tidak tersedia",
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.blueGrey,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
