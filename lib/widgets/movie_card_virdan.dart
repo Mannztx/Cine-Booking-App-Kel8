@@ -48,3 +48,20 @@ class MovieCardVirdan extends StatelessWidget {
             "${movie['rating']} ⭐",
             style: const TextStyle(fontSize: 12, color: Colors.grey),
           ),
+
+          // Genre Film (Tambahan)
+          Text(
+            movie['genre'] ?? "Genre tidak diketahui",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 12,
+              color: Colors.blueGrey,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
