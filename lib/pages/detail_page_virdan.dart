@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-import 'package:cine_booking_app_kel8/providers/seat_provider.dart';
+import 'package:cine_booking_app_kel8/providers/seat_provider_dinn.dart';
 
 class DetailPageVirdan extends StatelessWidget {
   final QueryDocumentSnapshot movie;
@@ -15,7 +15,7 @@ class DetailPageVirdan extends StatelessWidget {
 
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Provider.of<SeatProvider>(context, listen: false).clearSeats();
+          Provider.of<SeatProvider_dinn>(context, listen: false).clearSeats();
           Navigator.pushNamed(context, "/seat", arguments: movie.data());
         },
         label: const Text("Book Ticket"),
