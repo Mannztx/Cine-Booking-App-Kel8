@@ -15,11 +15,14 @@ class AuthControllerAng5 extends ChangeNotifier {
     required String email,
     required String password,
     required String username,
+    required BuildContext context,
   }) async {
     try {
       loading = true;
       errorMessage = null;
       notifyListeners();
+
+      Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
 
       final credential = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -43,11 +46,14 @@ class AuthControllerAng5 extends ChangeNotifier {
   Future<void> loginWithEmail({
     required String email,
     required String password,
+    required BuildContext context,
   }) async {
     try {
       loading = true;
       errorMessage = null;
       notifyListeners();
+
+      Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
 
       await _auth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
