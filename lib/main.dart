@@ -1,89 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:provider/provider.dart';
 
-// Tambahan: import halaman buatanmu
+// Providers
+import 'providers/seat_provider.dart';
+import 'controllers/auth_controller_ang5.dart';
+
+// Pages
+import 'pages/auth_wrapper_ang5.dart';
 import 'pages/home_page_virdan.dart';
 import 'pages/seat_page_nuris.dart';
+import 'pages/login_page_ang5.dart';
+import 'pages/register_page_ang5.dart';
+import 'pages/profile_page_ang5.dart';
 
-// Inisialisasi Firebase
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
-// Bagian Frontend (Lakukan Modifikasi)
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-
-      // 🔥 MODIFIKASI: halaman utama diganti ke HomePageVirdan
-      home: const HomePageVirdan(),
-
-      // 🔥 Tambahan: Routing ke halaman kursi (punya Nuris)
-      routes: {
-        "/seat": (_) => SeatPage_Nuris(),
-      },
-    );
-  }
-}
-
-// ===============================
-// Bagian di bawah INI TIDAK DIUBAH
-// ===============================
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => SeatProvider()),
+        ChangeNotifierProvider(create: (_) => AuthControllerAng5()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Cinema Booking App',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+
+        // 🔥 Auth Wrapper → cek login di awal aplikasi
+        home: const AuthWrapperAng5(),
+
+        // Semua route aplikasi
+        routes: {
+          "/home": (_) => const HomePageVirdan(),
+          "/login": (_) => const LoginPageAng5(),
+          "/register": (_) => const RegisterPageAng5(),
+          "/profile": (_) => const ProfilePageAng5(),
+          "/seat": (_) => SeatPage_Nuris(),
+        },
       ),
     );
   }
