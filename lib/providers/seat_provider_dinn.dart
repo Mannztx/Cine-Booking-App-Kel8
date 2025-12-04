@@ -20,7 +20,7 @@ class SeatProvider_dinn extends ChangeNotifier {
     notifyListeners();
   }
 
-  // METHOD YANG WAJIB ADA (INI YANG BIKIN CHECKOUT BERJALAN)
+  // digunakan untuk mengganti chekckout ke firebase berjalan
   Future<void> checkoutToFirebase_dinn({
     required BuildContext context,
     required Map<String, dynamic> movie,
