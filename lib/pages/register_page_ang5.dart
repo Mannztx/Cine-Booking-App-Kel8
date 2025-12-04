@@ -68,6 +68,7 @@ class _RegisterPageAng5State extends State<RegisterPageAng5> {
                     email: emailCtrl.text.trim(),
                     password: passCtrl.text.trim(),
                     username: usernameCtrl.text.trim(),
+                    context: context,
                   );
                 },
                 child: auth.loading
