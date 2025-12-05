@@ -15,6 +15,7 @@ class AuthControllerAng5 extends ChangeNotifier {
     required String email,
     required String password,
     required String username,
+    required String balance,
     required BuildContext context,
   }) async {
     try {
@@ -22,25 +23,7 @@ class AuthControllerAng5 extends ChangeNotifier {
       errorMessage = null;
       notifyListeners();
 
-      if (username.isEmpty) {
-        errorMessage = "Username tidak boleh kosong";
-        notifyListeners();
-        return;
-      }
-
-      if (!email.contains("@") || !email.contains(".")) {
-        errorMessage = "Format email tidak valid!";
-        notifyListeners();
-        return;
-      }
-
-      if (password.length < 6) {
-        errorMessage = "Password minimal 6 Karakter";
-        notifyListeners();
-        return;
-      }
-
-      //Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
+      Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => false);
 
       final credential = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -51,6 +34,7 @@ class AuthControllerAng5 extends ChangeNotifier {
         'uid': credential.user!.uid,
         'email': email,
         'username': username,
+        'balance': balance,
         'created_at': FieldValue.serverTimestamp(),
       });
     } on FirebaseAuthException catch (e) {
@@ -71,29 +55,9 @@ class AuthControllerAng5 extends ChangeNotifier {
       errorMessage = null;
       notifyListeners();
 
-      if (email.isEmpty) {
-        errorMessage = "password tidak boleh kosong!";
-        notifyListeners();
-        return;
-      } else if (!email.contains("@") || !email.contains(".")) {
-        errorMessage = "fromat email tidak valid!";
-        notifyListeners();
-        return;
-      }
-
-      if (password.isEmpty) {
-        errorMessage = "password tidak boleh kosong!";
-        notifyListeners();
-        return;
-      } else if (password.length < 6) {
-        errorMessage = "password tidak valid";
-        notifyListeners();
-        return;
-      }
+      Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
 
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-
-      Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
     } on FirebaseAuthException catch (e) {
       errorMessage = e.message;
     } finally {
