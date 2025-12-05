@@ -60,7 +60,7 @@ class _RegisterPageAng5State extends State<RegisterPageAng5> {
                 controller: balanceCtrl,
                 validator: (v) => v!.isEmpty ? "Balance wajib" : null,
                 decoration: const InputDecoration(
-                  labelText: "Password",
+                  labelText: "Balance",
                   border: OutlineInputBorder(),
                 ),
               ),
