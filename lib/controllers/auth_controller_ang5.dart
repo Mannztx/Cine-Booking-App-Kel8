@@ -55,11 +55,14 @@ class AuthControllerAng5 extends ChangeNotifier {
       errorMessage = null;
       notifyListeners();
 
-      Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
-
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
     } on FirebaseAuthException catch (e) {
       errorMessage = e.message;
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.message ?? "Login gagal")));
     } finally {
       loading = false;
       notifyListeners();
